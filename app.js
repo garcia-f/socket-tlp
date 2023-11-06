@@ -8,23 +8,26 @@ const cors = require('cors');
 
 app.use(cors());
 
+
+const messages = [];
+
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html');
 });
 
-const messages = [];
-
 io.on('connection', (socket) => {
-    console.log(socket.id);
+  console.log(socket.id);
 
-    socket.on('chat message', (msg) => {
-        messages.push(msg);
-        io.emit('chat message', msg);
-      });
+  socket.on('chat message', (msg) => {
+    messages.push(messages); 
+    io.emit('chat message', msg); // envia el mensaje a todos los clientes conectados
+  });
 
-    socket.on('disconnect', () => {
-        console.log('user disconnected', socket.id);
-    });
+
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected', socket.id);
+  });
 
 })
 
