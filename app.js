@@ -12,10 +12,13 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html');
 });
 
+const messages = [];
+
 io.on('connection', (socket) => {
     console.log(socket.id);
 
     socket.on('chat message', (msg) => {
+        messages.push(msg);
         io.emit('chat message', msg);
       });
 
