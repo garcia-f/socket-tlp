@@ -1,28 +1,33 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Chat Grupal</title>
     <!-- Agregar el enlace a la hoja de estilos de Bootstrap -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body class="container">
 
-  
-    <h1 class="mt-4 mb-4">Bienvenido al Chat Grupal</h1>
+    <div class="container text-center">
 
-    <div id="username-container" class="mb-4">
+        <h1 class="mt-4 mb-4">Bienvenido al Chat Grupal</h1>
+    </div>
+
+    <div id="username-container" class="mb-4 mt-5">
         <input type="text" id="username-input" class="form-control" placeholder="Ingresa tu nombre de usuario">
-        <button id="username-button" class="btn btn-primary mt-2">Ingresar al chat</button>
+
+        <button id="username-button" class="btn btn-primary mt-5">Igresar al chat </button>
     </div>
 
     <div id="chat-container" style="display: none;">
         <div id="messages" class="mb-4"></div>
-        <form id="form" action="" class="mb-4">
-            <div class="input-group">
+        <form id="form" action="" class="mb-4 ">
+            <div class="input-group ">
                 <input id="input" class="form-control" autocomplete="off" />
-                <div class="input-group-append">
-                    <button class="btn btn-primary">Enviar</button>
-                </div>
+                <!-- <div class="input-group-append"> -->
+                <button class="btn btn-primary ml-2">Enviar</button>
+                <!-- </div> -->
             </div>
         </form>
     </div>
@@ -42,7 +47,7 @@
         let typingTimer = null;
 
         // Evento para enviar el nombre de usuario al servidor
-        usernameButton.addEventListener('click', function(e) {
+        usernameButton.addEventListener('click', function (e) {
             e.preventDefault();
             const username = usernameInput.value.trim();
             if (username) {
@@ -53,7 +58,7 @@
         });
 
         // Evento para enviar un mensaje al servidor
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', function (e) {
             e.preventDefault();
             if (input.value) {
                 socket.emit('chat message', input.value);
@@ -62,7 +67,7 @@
         });
 
         // Maneja el mensaje del servidor y lo muestra en el chat
-        socket.on('chat message', function(msg) {
+        socket.on('chat message', function (msg) {
             const messages = document.getElementById('messages');
             const item = document.createElement('div');
             item.textContent = msg;
@@ -70,9 +75,9 @@
         });
 
         // Muestra los mensajes anteriores en el chat
-        socket.on('load old msgs', function(messages) {
+        socket.on('load old msgs', function (messages) {
             const messageContainer = document.getElementById('messages');
-            messages.forEach(function(msg) {
+            messages.forEach(function (msg) {
                 const item = document.createElement('div');
                 item.textContent = msg;
                 messageContainer.appendChild(item);
@@ -80,7 +85,7 @@
         });
 
         // Evento para enviar estado de escribiendo al servidor
-        input.addEventListener('input', function() {
+        input.addEventListener('input', function () {
             clearTimeout(typingTimer);
             if (input.value) {
                 socket.emit('typing');
@@ -93,7 +98,7 @@
         });
 
         // Maneja la visualización de usuarios escribiendo
-        socket.on('typing', function(typingUsers) {
+        socket.on('typing', function (typingUsers) {
             const typingDiv = document.getElementById('typing');
             typingDiv.innerHTML = '';
 
@@ -105,4 +110,5 @@
         });
     </script>
 </body>
+
 </html>

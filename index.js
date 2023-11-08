@@ -23,9 +23,11 @@ app.get('/', (req, res) => {
 io.on('connection', (socket) => {
   console.log(socket.id); // Muestra el ID del socket conectado en la consola del servidor
 
-  // Evento para registrar un nuevo usuario
   socket.on('new user', (username) => {
     users[socket.id] = username;
+    const userJoinedMessage = `${username}: Se ha unido al chat `;
+    messages.push(userJoinedMessage); // Agrega el mensaje de unión al array de mensajes
+    io.emit('chat message', userJoinedMessage); // Envía el mensaje de unión a todos los clientes conectados
   });
 
   // Evento para manejar cuando un usuario comienza a escribir
@@ -53,13 +55,13 @@ io.on('connection', (socket) => {
   });
 
   // Evento de desconexión
-  socket.on('disconnect', () => {
+ socket.on('disconnect', () => {
     console.log('user disconnected', socket.id); // Muestra que un usuario se desconectó en la consola del servidor, junto con su ID de socket
     const disconnectedUser = users[socket.id];
     if (disconnectedUser) {
         delete users[socket.id]; // Eliminar al usuario del almacenamiento al desconectarse
         delete typingUsers[socket.id]; // Eliminar al usuario de los usuarios escribiendo al desconectarse
-        const disconnectedMessage = `${disconnectedUser} se ha desconectado - ${new Date().toLocaleString()}`;
+        const disconnectedMessage = `${disconnectedUser}: Se ha desconectado`;
         messages.push(disconnectedMessage); // Agrega el mensaje de desconexión al array de mensajes
         io.emit('chat message', disconnectedMessage); // Envía el mensaje de desconexión a todos los clientes conectados
         io.emit('typing', typingUsers); // Actualiza el estado de usuarios escribiendo para todos los clientes
