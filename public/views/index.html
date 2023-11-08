@@ -21,13 +21,12 @@
     </div>
 
     <div id="chat-container" style="display: none;">
-        <div id="messages" class="mb-4"></div>
+        <div id="messages" class="col-11 box shadow"></div>
         <form id="form" action="" class="mb-4 ">
             <div class="input-group ">
                 <input id="input" class="form-control" autocomplete="off" />
-                <!-- <div class="input-group-append"> -->
                 <button class="btn btn-primary ml-2">Enviar</button>
-                <!-- </div> -->
+               
             </div>
         </form>
     </div>
@@ -51,7 +50,7 @@
             e.preventDefault();
             const username = usernameInput.value.trim();
             if (username) {
-                socket.emit('new user', username);
+                socket.emit('nuevo-usuario', username);
                 usernameContainer.style.display = 'none';
                 chatContainer.style.display = 'block';
             }
@@ -61,13 +60,13 @@
         form.addEventListener('submit', function (e) {
             e.preventDefault();
             if (input.value) {
-                socket.emit('chat message', input.value);
+                socket.emit('mensaje-chat', input.value);
                 input.value = '';
             }
         });
 
         // Maneja el mensaje del servidor y lo muestra en el chat
-        socket.on('chat message', function (msg) {
+        socket.on('mensaje-chat', function (msg) {
             const messages = document.getElementById('messages');
             const item = document.createElement('div');
             item.textContent = msg;
@@ -75,7 +74,7 @@
         });
 
         // Muestra los mensajes anteriores en el chat
-        socket.on('load old msgs', function (messages) {
+        socket.on('carga-mensajes-viejos', function (messages) {
             const messageContainer = document.getElementById('messages');
             messages.forEach(function (msg) {
                 const item = document.createElement('div');
@@ -88,17 +87,17 @@
         input.addEventListener('input', function () {
             clearTimeout(typingTimer);
             if (input.value) {
-                socket.emit('typing');
+                socket.emit('escribiendo');
                 typingTimer = setTimeout(() => {
-                    socket.emit('stop typing');
+                    socket.emit('parar-escribir');
                 }, 2000);
             } else {
-                socket.emit('stop typing');
+                socket.emit('parar-escribir');
             }
         });
 
         // Maneja la visualización de usuarios escribiendo
-        socket.on('typing', function (typingUsers) {
+        socket.on('escribiendo', function (typingUsers) {
             const typingDiv = document.getElementById('typing');
             typingDiv.innerHTML = '';
 
