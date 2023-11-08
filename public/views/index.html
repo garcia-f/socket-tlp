@@ -14,16 +14,18 @@
         <h1 class="mt-4 mb-4">Bienvenido al Chat Grupal</h1>
     </div>
 
-    <div id="username-container" class="mb-4 mt-5">
-        <input type="text" id="username-input" class="form-control" placeholder="Ingresa tu nombre de usuario">
-
-        <button id="username-button" class="btn btn-primary mt-5">Igresar al chat </button>
+    <div id="username-container" class="mb-4">
+        <div class="input-group ">
+            <input type="text" id="username-input" class="form-control" placeholder="Ingresa tu nombre de usuario">
+            <button id="username-button" class="btn btn-primary ml-2">Ingresar al chat </button>
+        </div>
+        
     </div>
 
     <div id="chat-container" style="display: none;">
-        <div id="messages" class="col-11 box shadow"></div>
+        <div id="messages" class="col"></div>
         <form id="form" action="" class="mb-4 ">
-            <div class="input-group ">
+            <div class="input-group mt-4">
                 <input id="input" class="form-control" autocomplete="off" />
                 <button class="btn btn-primary ml-2">Enviar</button>
                
