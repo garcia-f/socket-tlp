@@ -27,7 +27,7 @@ io.on('connection', (socket) => {
     users[socket.id] = username;
     const userJoinedMessage = `${username}: Se ha unido al chat `;
     messages.push(userJoinedMessage); // Agrega el mensaje de unión al array de mensajes
-    io.emit('mensaje-chat', userJoinedMessage); // Envía el mensaje de unión a todos los clientes conectados
+    socket.broadcast.emit('mensaje-chat', userJoinedMessage); // Envía el mensaje de unión a todos los clientes conectados
   });
 
 
@@ -50,7 +50,7 @@ io.on('connection', (socket) => {
   // Evento para manejar cuando un usuario comienza a escribir
   socket.on('escribiendo', () => {
     usuarioEscribiendo[socket.id] = users[socket.id];
-    io.emit('escribiendo', usuarioEscribiendo);
+    socket.broadcast.emit('escribiendo', usuarioEscribiendo);
   });
 
   // Evento para manejar cuando un usuario deja de escribir
